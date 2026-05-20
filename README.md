@@ -3,7 +3,7 @@
 Convert invoices, shipping labels and marketplace settlement PDFs into Excel, CSV and JSON.
 
 > **⚠️ This is not a universal AI PDF parser.**  
-> It is a **rule/template-based operational document parser** — best suited for structured invoices, shipping documents and e-commerce settlement reports. For general-purpose PDF extraction, use pdfplumber, PyMuPDF or a document AI API.
+> It is a **rule-based operational document parser** — best suited for structured invoices, shipping documents and e-commerce settlement reports. For general-purpose PDF extraction, use pdfplumber, PyMuPDF or a document AI API.
 
 A lightweight, open-source tool for e-commerce operations teams and cross-border sellers who need to extract structured data from PDF invoices, shipping labels, and marketplace settlement reports (Ozon, Wildberries).
 
@@ -43,7 +43,6 @@ curl -X POST http://localhost:8000/parse \
 - Auto-classify document type (4 built-in classifiers)
 - Export to **Excel** (`.xlsx`), **CSV** (`.csv`), **JSON** (`.json`)
 - CLI (`pdfops`) and REST API (`FastAPI`)
-- Extensible YAML template system for new document types
 - Docker support (`docker compose up`)
 
 ## Sample Documents
@@ -58,12 +57,20 @@ These samples are **generated** and contain **no real personal or business sensi
 
 ## Supported Document Types
 
-| Type | Auto-classify? | Templates |
-|------|----------------|-----------|
-| Invoice | ✅ | `invoice.default.yaml` |
-| Shipping label | ✅ | `shipping.default.yaml` |
-| Ozon settlement | ✅ | `ozon.settlement.yaml` |
-| Wildberries report | ✅ | `wildberries.report.yaml` |
+| Type | Auto-classify? |
+|------|----------------|
+| Invoice | ✅ |
+| Shipping label | ✅ |
+| Ozon settlement | ✅ |
+| Wildberries report | ✅ |
+
+## Roadmap
+
+- YAML-based template system (define custom document parsers without code)
+- Wildberries full settlement parser
+- Multi-page document support
+- OAuth-based API key management
+- Web UI
 
 ## Project Structure
 

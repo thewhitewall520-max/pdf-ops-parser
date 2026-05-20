@@ -42,17 +42,16 @@ def parse_settlement(pdf_path: str | Path) -> SettlementInfo:
         platform = "wildberries"
 
     total_sales = _find_decimal(text, [
-        r"(?i)(?:total\s+sales|выручка|продажи|total).*?([\d,]+\.?\d*)",
+        r"(?i)(?:total\s+sales|выручка|продажи).*?([\d,]+\.?\d*)",
     ])
     total_fees = _find_decimal(text, [
-        r"(?i)(?:total\s+fees|комиссия|сборы).*?([\d,]+\.?\d*)",
-        r"(?i)комиссия.*?([\d,]+\.?\d*)",
+        r"(?i)(?:total\s+fees|комиссия|комиссионные|сборы).*?([\d,]+\.?\d*)",
     ])
     total_refunds = _find_decimal(text, [
         r"(?i)(?:total\s+refunds|возвраты).*?([\d,]+\.?\d*)",
     ])
     net_payout = _find_decimal(text, [
-        r"(?i)(?:net\s+payout|к\s+выплате|итого|payout).*?([\d,]+\.?\d*)",
+        r"(?i)(?:net\s+payout|к\s+выплате|payout).*?([\d,]+\.?\d*)",
     ])
 
     return SettlementInfo(

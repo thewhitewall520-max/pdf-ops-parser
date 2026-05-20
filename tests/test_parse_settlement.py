@@ -81,3 +81,17 @@ class TestParseSettlement:
         pdf_path = _gen_ozon_settlement(tmp_path)
         result = parse_settlement(str(pdf_path))
         assert result.currency == "RUB"
+
+    def test_regression_no_cross_parse_invoice_as_settlement(self, tmp_path: Path):
+        """Settlement parser should NOT match an invoice's 'Total:' as total_sales."""
+        from packages.parser.extract_text import extract_text
+
+        # Parse invoice with settlement parser — should NOT extract total_sales
+        result = parse_settlement("samples/invoice.pdf")
+        # In an invoice, there's no settlement context, so total_sales should be None
+        # The regex must not match bare "Total: $122.50"
+        assert result.total_sales is None, (
+            f"Settlement parser should not extract 'Total:' from invoice, "
+            f"got total_sales={result.total_sales}"
+        )
+        assert result.platform is None

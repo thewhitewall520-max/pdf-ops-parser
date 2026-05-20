@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """PDF Ops Parser — Typer CLI entry point."""
 
 from __future__ import annotations
@@ -12,6 +13,7 @@ from packages.parser.export_excel import export_excel
 from packages.parser.export_json import export_json
 from packages.parser.parse_invoice import parse_invoice
 from packages.parser.parse_shipping import parse_shipping
+from packages.parser.parse_settlement import parse_settlement
 from packages.parser.schemas import DocType, OutputFormat
 
 app = typer.Typer(
@@ -25,15 +27,11 @@ def parse(
     pdf_path: str = typer.Argument(..., help="Path to the PDF file"),
     doc_type: str = typer.Option(
         None, "--type", "-t",
-        help="Document type (invoice, shipping). If omitted, auto-detect.",
+        help="Document type (invoice, shipping, ozon.settlement). If omitted, auto-detect.",
     ),
     output: str = typer.Option(
         "output.xlsx", "--out", "-o",
         help="Output file path. Extension determines format (.xlsx, .csv, .json)",
-    ),
-    template: str | None = typer.Option(
-        None, "--template",
-        help="Template name from templates/ directory",
     ),
 ):
     """
@@ -45,7 +43,7 @@ def parse(
 
         pdfops parse sample.pdf --type shipping --out tracking.csv
 
-        pdfops parse report.pdf --template ozon.settlement --out report.json
+        pdfops parse report.pdf --type ozon.settlement --out report.json
     """
     pdf = Path(pdf_path)
     if not pdf.exists():
@@ -54,7 +52,7 @@ def parse(
 
     # Determine document type
     resolved_type: str | None = doc_type
-    if resolved_type is None and template is None:
+    if resolved_type is None:
         typer.echo("Auto-detecting document type...", err=True)
         classified = classify_from_file(str(pdf))
         if classified:
@@ -62,7 +60,7 @@ def parse(
             typer.echo(f"  Detected as: {resolved_type}", err=True)
         else:
             typer.echo(
-                "Could not auto-detect document type. Use --type or --template.",
+                "Could not auto-detect document type. Use --type to specify.",
                 err=True,
             )
             raise typer.Exit(1)
@@ -75,7 +73,6 @@ def parse(
         elif resolved_type == DocType.SHIPPING.value:
             result = parse_shipping(str(pdf))
         elif resolved_type in (DocType.OZON_SETTLEMENT.value, DocType.WILDBERRIES_REPORT.value):
-            from packages.parser.parse_settlement import parse_settlement
             result = parse_settlement(str(pdf))
         else:
             result = parse_invoice(str(pdf))  # fallback
