@@ -1,0 +1,33 @@
+# Ozon Settlement Report Template
+
+fields:
+  seller_id:
+    patterns:
+      - "(?i)seller\\s*(id|#|number):?\\s*(\\S+)"
+      - "(?i)продавец:?\\s*(\\S+)"
+    group: 2
+
+  period_start:
+    patterns:
+      - "(?i)(?:period|report|отчет)\\s*(?:from|start|с)\\s*(\\d{4}[-/]\\d{2}[-/]\\d{2})"
+
+  period_end:
+    patterns:
+      - "(?i)(?:period|report|отчет)\\s*(?:to|end|по)\\s*(\\d{4}[-/]\\d{2}[-/]\\d{2})"
+
+  total_sales:
+    patterns:
+      - "(?i)(?:total\\s+sales|выручка|продажи).*?([\\d,\\s]+\\.?\\d*)"
+      - "(?i)итого\\s*продажи.*?([\\d,\\s]+\\.?\\d*)"
+
+  total_fees:
+    patterns:
+      - "(?i)(?:total\\s+fees|комиссия|сборы).*?([\\d,\\s]+\\.?\\d*)"
+
+  total_refunds:
+    patterns:
+      - "(?i)(?:total\\s+refunds|возвраты).*?([\\d,\\s]+\\.?\\d*)"
+
+  net_payout:
+    patterns:
+      - "(?i)(?:net\\s+payout|к\\s+выплате|итого).*?([\\d,\\s]+\\.?\\d*)"

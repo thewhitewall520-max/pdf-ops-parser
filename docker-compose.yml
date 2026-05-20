@@ -1,0 +1,17 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./apps:/app/apps
+      - ./packages:/app/packages
+      - ./templates:/app/templates
+      - ./samples:/app/samples
+    environment:
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - LOG_LEVEL=INFO
+    command: uvicorn apps.api.main:app --host 0.0.0.0 --port 8000 --reload

@@ -1,0 +1,44 @@
+# Invoice Default Template
+# Field extraction rules for standard invoices
+
+fields:
+  invoice_number:
+    patterns:
+      - "(?i)invoice\\s*(#|no|number):\\s*(\\S+)"
+      - "(?i)invoice\\s+#:\\s*(\\S+)"
+    group: 2
+
+  invoice_date:
+    patterns:
+      - "(?i)(?:invoice\\s+)?date:?\\s*(\\d{4}[-/]\\d{2}[-/]\\d{2})"
+      - "(?i)(?:invoice\\s+)?date:?\\s*(\\d{2}[-/]\\d{2}[-/]\\d{4})"
+
+  seller_name:
+    patterns:
+      - "(?i)(?:seller|from|vendor|supplier):?\\s*(.+)"
+
+  buyer_name:
+    patterns:
+      - "(?i)(?:buyer|to|bill\\s+to|customer):?\\s*(.+)"
+
+  total:
+    patterns:
+      - "(?i)total:?\\s*\\$?([\\d,]+\\.?\\d*)"
+      - "(?i)amount\\s+due:?\\s*\\$?([\\d,]+\\.?\\d*)"
+
+  tax:
+    patterns:
+      - "(?i)tax:?\\s*\\$?([\\d,]+\\.?\\d*)"
+
+  shipping:
+    patterns:
+      - "(?i)(?:shipping|freight):?\\s*\\$?([\\d,]+\\.?\\d*)"
+
+table:
+  header_row: 0
+  column_guess:
+    - sku
+    - name
+    - quantity
+    - unit_price
+    - total_price

@@ -1,0 +1,32 @@
+# Wildberries Report Template
+
+fields:
+  seller_id:
+    patterns:
+      - "(?i)seller\\s*(id|#|number):?\\s*(\\S+)"
+      - "(?i)wb\\s*(id|артикул):?\\s*(\\S+)"
+    group: 2
+
+  period_start:
+    patterns:
+      - "(?i)(?:period|report|отчет)\\s*(?:from|start|с)\\s*(\\d{4}[-/]\\d{2}[-/]\\d{2})"
+
+  period_end:
+    patterns:
+      - "(?i)(?:period|report|отчет)\\s*(?:to|end|по)\\s*(\\d{4}[-/]\\d{2}[-/]\\d{2})"
+
+  total_sales:
+    patterns:
+      - "(?i)(?:total\\s+sales|выручка|продано).*?([\\d,\\s]+\\.?\\d*)"
+
+  total_fees:
+    patterns:
+      - "(?i)(?:total\\s+fees|комиссия|тариф).*?([\\d,\\s]+\\.?\\d*)"
+
+  total_refunds:
+    patterns:
+      - "(?i)(?:refunds|возвраты).*?([\\d,\\s]+\\.?\\d*)"
+
+  net_payout:
+    patterns:
+      - "(?i)(?:payout|к\\s+выплате|зарплата|итого).*?([\\d,\\s]+\\.?\\d*)"
